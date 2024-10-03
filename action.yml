@@ -14,7 +14,7 @@ inputs:
   shell:
     description: 'Use a specific shell'
     required: false
-    default: bash -eo pipefail -c {0}
+    default: sh
   registry:
     description: 'Registry'
     required: false
@@ -32,6 +32,14 @@ runs:
   using: 'composite'
   steps:
     -
-      shell: bash
-      run: |
-        echo "Hello"
+      shell: 'script -q -e -c "bash --norc --noprofile -eo pipefail {0}"'
+      env:
+        INPUT_IMAGE: ${{inputs.image}}
+        INPUT_SHELL: ${{inputs.shell}}
+        INPUT_OPTIONS: ${{inputs.options}}
+        INPUT_RUN: ${{inputs.run}}
+        INPUT_REGISTRY: ${{inputs.registry}}
+        INPUT_USERNAME: ${{inputs.username}}
+        INPUT_PASSWORD: ${{inputs.password}}
+        INPUT_DOCKER_NETWORK: ${{inputs.docker_network}}
+      run: $GITHUB_ACTION_PATH/entrypoint.sh
