@@ -1,4 +1,4 @@
-name: Testing
+name: Test
 
 on:
   workflow_dispatch:
@@ -16,13 +16,17 @@ jobs:
         with:
           platforms: all
       -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Test
-        uses: hieupth/docker-action@v1
+        name: Run
+        uses: hieupth/docker-action@v3
         with: 
           image: perl
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
           run: |
             perl -E 'say "Is STDOUT a TTY?: ", -t STDOUT ? "yes" : "no"'
             docker ps -a
+      -
+        name: Push image
+        run: |
+          docker tag perl ${{secrets.DOCKERHUB_USERNAME}}/docker-action-test
+          docker push ${{secrets.DOCKERHUB_USERNAME}}/docker-action-test
