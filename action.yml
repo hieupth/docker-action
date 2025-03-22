@@ -1,6 +1,6 @@
 # action.yml
-name: 'Docker Run Action'
-description: 'Run a command in a new container'
+name: 'Run Action inside Container'
+description: 'Run action inside an container'
 inputs:
   image:
     description: 'Image'
@@ -14,7 +14,7 @@ inputs:
   shell:
     description: 'Use a specific shell'
     required: false
-    default: sh
+    default: bash
   registry:
     description: 'Registry'
     required: false
